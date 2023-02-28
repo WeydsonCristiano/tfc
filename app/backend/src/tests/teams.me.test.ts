@@ -7,7 +7,6 @@ import { app } from '../app';
 import Team from '../database/models/Team';
 
 import { Response } from 'superagent';
-import { after } from 'node:test';
 
 chai.use(chaiHttp);
 
@@ -17,20 +16,20 @@ describe('testar teams', () => {
   const teams = [
     {
       id: 1,
-      teamName: 'Bahia',
+      team_name: 'Bahia',
     },
     {
       id: 2,
-      teamName: 'Botafogo',
+      team_name: 'Botafogo',
     },
   ];
 
-  after(() => {
-    (Team.findOne as sinon.SinonStub).restore();
+  afterEach(() => {
+    sinon.restore();
   });
 
   it('testando rota ', async () => {
-    sinon.stub(Team, 'findAll').resolves(teams as Team[]);
+    sinon.stub(Team, 'findAll').resolves(teams as unknown as Team[]);
 
     const res = await chai.request(app).get('/teams').send();
 
@@ -41,11 +40,11 @@ describe('testar teams', () => {
   it('Testa rota id', async () => {
     sinon
     .stub(Team, 'findByPk')
-    .resolves(teams[0] as Team)
+    .resolves(teams[0] as unknown as Team)
 
     const res = await chai.request(app).get('/teams/1').send()
     
     expect(res).to.have.status(200)
-    expect(res.body).to.deep.equal(Team[0])
+    expect(res.body).to.deep.equal(teams[0])
   });
 });
