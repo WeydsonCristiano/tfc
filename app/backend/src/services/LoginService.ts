@@ -12,6 +12,13 @@ class LoginService {
     }
     return login;
   }
+
+  static async verifToken(authorization, password) {
+    const newToken = await bcrypt.compareSync(authorization, password);
+    if (!newToken) {
+      return undefined;
+    }
+  }
 }
 
 export default LoginService;
