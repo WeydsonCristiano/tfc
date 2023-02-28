@@ -14,7 +14,6 @@ Team.init({
     type: DataTypes.INTEGER,
   },
   teamName: DataTypes.STRING,
-  field: 'team_name',
 }, {
   // ... Outras configs
   underscored: true,

@@ -15,6 +15,7 @@ const { expect } = chai;
 describe('testar login', () => {
   const user = 
     {
+      id: 1,
       username: 'Admin',
       role: 'admin',
       email: 'admin@admin.com',
@@ -26,12 +27,12 @@ describe('testar login', () => {
     sinon.restore();
   });
 
-  it('testando rota ', async () => {
+  it('testando login ', async () => {
     sinon.stub(User, 'findAll').resolves(user as unknown as User[]);
 
     const res = await chai.request(app).get('/login').send({ email: user.email, password: user.password });
 
     expect(res).to.have.status(200);
-    expect(res.body).to.deep.equal({token:user.password});
+    expect(res.body).to.deep.equal(user);
   });
 });

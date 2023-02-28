@@ -1,4 +1,6 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
+
 import AuthenticatedUser from '../interface/AuthenticatedUser';
 
 const TOKEN_SECRET = process.env.JWT_SECRET || 'seusecretdetoken';
@@ -14,4 +16,4 @@ const authenticateToken = (token: string): AuthenticatedUser => {
   return verificationResponse;
 };
 
-export default { generateToken, authenticateToken };
+export { generateToken, authenticateToken };
