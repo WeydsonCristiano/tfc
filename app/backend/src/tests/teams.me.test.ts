@@ -37,4 +37,15 @@ describe('testar teams', () => {
     expect(res).to.have.status(200);
     expect(res.body).to.deep.equal(teams);
   });
+
+  it('Testa rota id', async () => {
+    sinon
+    .stub(Team, 'findByPk')
+    .resolves(teams[0] as Team)
+
+    const res = await chai.request(app).get('/teams/1').send()
+    
+    expect(res).to.have.status(200)
+    expect(res.body).to.deep.equal(teams[0])
+  });
 });
