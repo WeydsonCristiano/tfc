@@ -19,6 +19,48 @@ class MatchService {
     });
     return matchs;
   };
+
+  static listInprogressOn = async () => {
+    const listOn = await Match.findAll({
+      where: {
+        inProgress: true,
+      },
+      include: [
+        {
+          model: Team,
+          as: 'homeTeam',
+          attributes: { exclude: ['id'] },
+        },
+        {
+          model: Team,
+          as: 'awayTeam',
+          attributes: { exclude: ['id'] },
+        },
+      ],
+    });
+    return listOn;
+  };
+
+  static listInprogressOff = async () => {
+    const listOff = await Match.findAll({
+      where: {
+        inProgress: false,
+      },
+      include: [
+        {
+          model: Team,
+          as: 'homeTeam',
+          attributes: { exclude: ['id'] },
+        },
+        {
+          model: Team,
+          as: 'awayTeam',
+          attributes: { exclude: ['id'] },
+        },
+      ],
+    });
+    return listOff;
+  };
 }
 
 export default MatchService;
