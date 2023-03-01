@@ -6,6 +6,6 @@ import validateEmail from '../middleware/validationLogin';
 const loginRouter = Router();
 
 loginRouter.post('/login', validateEmail, LoginController.login);
-loginRouter.get('/login/role', validateToken);
+loginRouter.get('/login/role', validateToken, LoginController.role);
 
 export default loginRouter;

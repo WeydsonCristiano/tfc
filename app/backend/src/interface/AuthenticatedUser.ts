@@ -1,5 +1,6 @@
 export default interface AuthenticatedUser {
-  user: string;
+  user: string
+  role: string;
   email: string;
   password: string;
   id?: number;

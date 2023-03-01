@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcryptjs';
+import { authenticateToken } from '../utis/JWT';
 import User from '../database/models/User';
 
 class LoginService {
@@ -12,6 +13,10 @@ class LoginService {
     }
     return login;
   }
-}
 
+  static async role(token: string) {
+    const { role } = await authenticateToken(token);
+    return role;
+  }
+}
 export default LoginService;
