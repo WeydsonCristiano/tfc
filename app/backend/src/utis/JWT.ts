@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 
 import AuthenticatedUser from '../interface/AuthenticatedUser';
 
-const TOKEN_SECRET = process.env.JWT_SECRET || 'seusecretdetoken';
+const TOKEN_SECRET = process.env.JWT_SECRET || 'jwt_secret';
 
 const generateToken = (payload: JwtPayload): string =>
   jwt.sign(payload, TOKEN_SECRET, {

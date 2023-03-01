@@ -10,13 +10,11 @@ const validateToken = async (
   if (!token) {
     return res.status(401).json({ message: 'Token not found' });
   }
-
-  const verifToken = authenticateToken(token);
-
-  if (!verifToken) {
+  try {
+    authenticateToken(token);
+  } catch (error) {
     return res.status(401).json({ message: 'Token must be a valid token' });
   }
-  return res.status(200).json({ role: 'admin' });
   next();
 };
 
