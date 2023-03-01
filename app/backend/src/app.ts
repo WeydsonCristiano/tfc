@@ -1,6 +1,7 @@
 import * as express from 'express';
 import loginRouter from './routers/loginRouter';
-import teamRouter from './routers/teams';
+import matchRouter from './routers/matchRouter';
+import teamRouter from './routers/teamRouters';
 
 class App {
   public app: express.Express;
@@ -12,14 +13,18 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
-    this.app.use(teamRouter);
-    this.app.use(loginRouter);
+    this.app.use('/teams', teamRouter);
+    this.app.use('/login', loginRouter);
+    this.app.use('/matches', matchRouter);
   }
 
-  private config():void {
+  private config(): void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
+      res.header(
+        'Access-Control-Allow-Methods',
+        'GET,POST,DELETE,OPTIONS,PUT,PATCH',
+      );
       res.header('Access-Control-Allow-Headers', '*');
       next();
     };
@@ -28,7 +33,7 @@ class App {
     this.app.use(accessControl);
   }
 
-  public start(PORT: string | number):void {
+  public start(PORT: string | number): void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
   }
 }
