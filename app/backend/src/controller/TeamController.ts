@@ -13,14 +13,9 @@ class TeamController {
   }
 
   static async findOne(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      const respId = await TeamService.findOne(Number(id));
-      res.status(200).json(respId);
-    } catch (err) {
-      const error = err as Error;
-      return res.status(404).json({ message: error.message });
-    }
+    const { id } = req.params;
+    const respId = await TeamService.findOne(Number(id));
+    return res.status(200).json(respId);
   }
 }
 

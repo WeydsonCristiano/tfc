@@ -1,6 +1,7 @@
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 import IbodyInterface from '../interface/InterBody';
+import GenericError from '../erros/GenericError';
 
 class MatchService {
   static findAll = async () => {
@@ -79,10 +80,10 @@ class MatchService {
   static create = async ({ ...body }) => {
     const { homeTeamId, awayTeamId } = body;
     if (homeTeamId === awayTeamId) {
-      return { status: 422, message: 'It is not possible to create a match with two equal teams' };
+      throw new GenericError('It is not possible to create a match with two equal teams', 422);
     }
     if (!homeTeamId || !awayTeamId) {
-      return { status: 404, message: 'There is no team with such id!' };
+      throw new GenericError('There is no team with such id!', 404);
     }
     const matchersUpdate = await Match.create({ ...body, inProgress: true });
     return { status: 201, message: matchersUpdate };

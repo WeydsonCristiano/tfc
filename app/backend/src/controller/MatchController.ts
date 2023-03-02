@@ -55,13 +55,8 @@ class MatchController {
   }
 
   static async create(req: Request, res: Response) {
-    try {
-      const respUp = await MatchService.create(req.body);
-      res.status(respUp.status).json(respUp.message);
-    } catch (err) {
-      const error = err as Error;
-      return res.status(500).json({ message: error.message });
-    }
+    const respUp = await MatchService.create(req.body);
+    return res.status(respUp.status).json(respUp.message);
   }
 }
 
