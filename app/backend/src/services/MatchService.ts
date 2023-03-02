@@ -75,6 +75,11 @@ class MatchService {
     const matchersUpdate = await Match.update({ ...body }, { where: { id } });
     return matchersUpdate;
   };
+
+  static updateInprogress = async (body: IbodyInterface, id: number) => {
+    const matchersUpdate = await Match.update({ ...body }, { where: { id } });
+    return matchersUpdate;
+  };
 }
 
 export default MatchService;
