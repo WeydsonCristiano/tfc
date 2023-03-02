@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 import IbodyInterface from '../interface/InterBody';
@@ -82,7 +83,13 @@ class MatchService {
     if (homeTeamId === awayTeamId) {
       throw new GenericError('It is not possible to create a match with two equal teams', 422);
     }
-    if (!homeTeamId || !awayTeamId) {
+    const respTeams = await Team.findAll({
+      where: {
+        id: { [Op.or]: [homeTeamId, awayTeamId] },
+      },
+    });
+
+    if (respTeams.length !== 2) {
       throw new GenericError('There is no team with such id!', 404);
     }
     const matchersUpdate = await Match.create({ ...body, inProgress: true });
