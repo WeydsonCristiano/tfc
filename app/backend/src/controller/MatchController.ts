@@ -54,10 +54,10 @@ class MatchController {
     }
   }
 
-  static async updateInprogress(req: Request, res: Response) {
+  static async create(req: Request, res: Response) {
     try {
-      const respUp = await MatchService.updateInprogress(req.body);
-      res.status(200).json(respUp);
+      const respUp = await MatchService.create(req.body);
+      res.status(respUp.status).json({ message: respUp.message });
     } catch (err) {
       const error = err as Error;
       return res.status(500).json({ message: error.message });

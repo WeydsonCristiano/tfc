@@ -76,16 +76,16 @@ class MatchService {
     return matchersUpdate;
   };
 
-  static updateInprogress = async ({ ...body }) => {
+  static create = async ({ ...body }) => {
     const { homeTeamId, awayTeamId } = body;
+    if (!homeTeamId || !awayTeamId) {
+      return { status: 404, message: 'There is no team with such id!' };
+    }
     if (homeTeamId === awayTeamId) {
       return { status: 422, message: 'It is not possible to create a match with two equal teams' };
     }
-    if (!homeTeamId && !awayTeamId) {
-      return { status: 404, message: 'There is no team with such id!' };
-    }
     const matchersUpdate = await Match.create({ ...body });
-    return matchersUpdate;
+    return { status: 201, message: matchersUpdate };
   };
 }
 
