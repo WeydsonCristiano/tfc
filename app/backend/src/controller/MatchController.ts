@@ -56,8 +56,7 @@ class MatchController {
 
   static async updateInprogress(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const respUp = await MatchService.updateInprogress(req.body, Number(id));
+      const respUp = await MatchService.updateInprogress(req.body);
       res.status(200).json(respUp);
     } catch (err) {
       const error = err as Error;
