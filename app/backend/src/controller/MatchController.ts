@@ -42,6 +42,17 @@ class MatchController {
       return res.status(500).json({ message: error.message });
     }
   }
+
+  static async updateMatchers(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const respUp = await MatchService.updateMatchers(req.body, Number(id));
+      res.status(200).json(respUp);
+    } catch (err) {
+      const error = err as Error;
+      return res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 export default MatchController;

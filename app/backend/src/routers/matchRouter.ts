@@ -10,6 +10,11 @@ matchRouter.get('/', (req: Request, res: Response) => {
   return MatchController.findAll(req, res);
 });
 matchRouter.patch(
+  '/:id',
+  validateToken,
+  (req: Request, res: Response) => MatchController.updateMatchers(req, res),
+);
+matchRouter.patch(
   '/:id/finish',
   validateToken,
   (req: Request, res: Response) =>

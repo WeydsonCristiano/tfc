@@ -66,6 +66,11 @@ class MatchService {
     const respEnd = await Match.update({ inProgress: false }, { where: { id } });
     return respEnd;
   };
+
+  static updateMatchers = async ({ homeTeamGoals, awayTeamGoals }, id: number): Promise<Match> => {
+    const matchersUpdate = await Match.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return matchersUpdate;
+  };
 }
 
 export default MatchService;
