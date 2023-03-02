@@ -64,7 +64,6 @@ class MatchService {
 
   static finish = async (id: number) => {
     const respEnd = await Match.update({ inProgress: false }, { where: { id } });
-    console.log('***estou no finish***', respEnd);
     return respEnd;
   };
 }
