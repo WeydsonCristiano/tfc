@@ -46,6 +46,7 @@ class MatchController {
   static async updateMatchers(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      console.log('**id controller**', id);
       const respUp = await MatchService.updateMatchers(req.body, Number(id));
       res.status(200).json(respUp);
     } catch (err) {

@@ -1,5 +1,6 @@
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
+import IbodyInterface from '../interface/InterBody';
 
 class MatchService {
   static findAll = async () => {
@@ -63,12 +64,15 @@ class MatchService {
   };
 
   static finish = async (id: number) => {
-    const respEnd = await Match.update({ inProgress: false }, { where: { id } });
+    const respEnd = await Match.update(
+      { inProgress: false },
+      { where: { id } },
+    );
     return respEnd;
   };
 
-  static updateMatchers = async ({ homeTeamGoals, awayTeamGoals }, id: number): Promise<Match> => {
-    const matchersUpdate = await Match.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+  static updateMatchers = async (body: IbodyInterface, id: number) => {
+    const matchersUpdate = await Match.update({ ...body }, { where: { id } });
     return matchersUpdate;
   };
 }
