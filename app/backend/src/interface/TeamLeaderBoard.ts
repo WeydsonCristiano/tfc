@@ -32,7 +32,7 @@ export default class TeamLeaderBoard {
     if (type === 'away') this.sumAwayPoints();
 
     this.efficiencyTeams();
-    this.calcGoals();
+    this.sumGoals();
   }
 
   public sumHomePoints() {
@@ -81,7 +81,7 @@ export default class TeamLeaderBoard {
     }
   }
 
-  public calcGoals() {
+  public sumGoals() {
     const { homeMatches, awayMatches } = this._team;
     const matches = this._type === 'home' ? homeMatches : awayMatches;
 
