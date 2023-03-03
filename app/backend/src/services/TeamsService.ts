@@ -14,12 +14,10 @@ export default class TeamService {
     return team;
   };
 
-  static getHomeAwayMatches = async (
-    type: 'homeMatches' | 'awayMatches',
-  ) => Team.findAll({ include: [{
+  static getHomeAwayMatches = async (type: 'home') => Team.findAll({ include: [{
     model: Match,
     as: type,
-    attributes: ['homeTeamGoals', 'awayTeamGoals'],
+    attributes: ['homeTeamGoals'],
     where: { inProgress: false },
   }] });
 }
