@@ -4,6 +4,7 @@ import clientErrorHandler from './middleware/validadeHomeAway';
 import loginRouter from './routers/loginRouter';
 import matchRouter from './routers/matchRouter';
 import teamRouter from './routers/teamRouters';
+import leaderRouter from './routers/leaderBoard';
 
 class App {
   public app: express.Express;
@@ -18,6 +19,7 @@ class App {
     this.app.use('/teams', teamRouter);
     this.app.use('/login', loginRouter);
     this.app.use('/matches', matchRouter);
+    this.app.use('/leaderboard', leaderRouter);
     this.app.use(clientErrorHandler);
   }
 
