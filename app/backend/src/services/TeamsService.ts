@@ -1,5 +1,6 @@
 import GenericError from '../erros/GenericError';
 import Team from '../database/models/Team';
+import Match from '../database/models/Match';
 
 export default class TeamService {
   static findAll = async () => {
@@ -12,4 +13,13 @@ export default class TeamService {
     if (!team) throw new GenericError('No team found', 404);
     return team;
   };
+
+  static getHomeAwayMatches = async (
+    type: 'homeMatches' | 'awayMatches',
+  ) => Team.findAll({ include: [{
+    model: Match,
+    as: type,
+    attributes: ['homeTeamGoals', 'awayTeamGoals'],
+    where: { inProgress: false },
+  }] });
 }
