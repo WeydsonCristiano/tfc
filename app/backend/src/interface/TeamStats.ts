@@ -7,4 +7,6 @@ export default interface TeamStats {
   goalsFavor: number;
   goalsOwn: number;
   totalPoints: number;
+  goalsBalance: number;
+  efficiency: string;
 }

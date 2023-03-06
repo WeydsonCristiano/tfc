@@ -1,76 +1,86 @@
-import MatchService from './MatchService';
-import { vitoriaHome, derrotaHome, empateHome } from '../utis/FunctionHome';
-import { TabInter, TabInterHomeAway } from '../interface/tabInter';
 import TeamStats from '../interface/TeamStats';
-import IbodyInterface from '../interface/InterBody';
+import Team from '../database/models/Team';
+import Match from '../database/models/Match';
 
-const verificaResultado = (partida: IbodyInterface) => {
-  if (partida.homeTeamGoals > partida.awayTeamGoals) {
-    return vitoriaHome(partida);
+export default class LeaderBoardService {
+  static victories(filterMatch: Match[]) {
+    return filterMatch.filter(
+      (match) => match.homeTeamGoals > match.awayTeamGoals,
+    ).length;
   }
-  if (partida.homeTeamGoals < partida.awayTeamGoals) {
-    return derrotaHome(partida);
+
+  static draws(filterMatch: Match[]) {
+    return filterMatch.filter(
+      (match) => match.homeTeamGoals === match.awayTeamGoals,
+    ).length;
   }
-  return empateHome(partida);
-};
 
-const zeraTimes = (e: TabInter) => ({
-  name: e.name,
-  totalPoints: 0,
-  totalGames: 0,
-  totalVictories: 0,
-  totalDraws: 0,
-  totalLosses: 0,
-  goalsFavor: 0,
-  goalsOwn: 0,
-});
+  static losses(filterMatch: Match[]) {
+    return filterMatch.filter(
+      (match) => match.homeTeamGoals < match.awayTeamGoals,
+    ).length;
+  }
 
-export default class LeaderboardService {
-  static async zeraClassHome() {
-    const respHome = await MatchService.listInprogressOff();
-    const test = respHome.map((p) => verificaResultado(p));
-    const newArray: TeamStats[] = [];
-    test.forEach((element, index, arr) => {
-      if (element.name === arr[index].name) {
-        newArray.push(zeraTimes(element));
-      }
+  static sumFavor(filterMatch: Match[]) {
+    return filterMatch.reduce((acc, match) => match.homeTeamGoals + acc, 0);
+  }
+
+  static sumOwn(filterMatch: Match[]) {
+    return filterMatch.reduce((acc, match) => match.awayTeamGoals + acc, 0);
+  }
+
+  static balance(filterMatch: Match[]) {
+    return (
+      LeaderBoardService.sumFavor(filterMatch) - LeaderBoardService.sumOwn(filterMatch)
+    );
+  }
+
+  static sumPoints(filterMatch: Match[]) {
+    return (
+      LeaderBoardService.victories(filterMatch) * 3 + LeaderBoardService.draws(filterMatch)
+    );
+  }
+
+  static effec(filterMatch: Match[]) {
+    return (
+      (LeaderBoardService.sumPoints(filterMatch) / (filterMatch.length * 3)) * 100).toFixed(2);
+  }
+
+  static sortMatch(leaderBoard: TeamStats[]) {
+    return leaderBoard.sort((a, b) => (
+      b.totalPoints - a.totalPoints || b.totalVictories - a.totalVictories
+      || b.goalsBalance - a.goalsBalance || b.goalsFavor - a.goalsFavor
+      || b.goalsOwn - a.goalsOwn));
+  }
+
+  static respHome(filterMatch: Match[], teamName: string) {
+    return {
+      name: teamName,
+      totalPoints: LeaderBoardService.sumPoints(filterMatch),
+      totalGames: filterMatch.length,
+      totalVictories: LeaderBoardService.victories(filterMatch),
+      totalDraws: LeaderBoardService.draws(filterMatch),
+      totalLosses: LeaderBoardService.losses(filterMatch),
+      goalsFavor: LeaderBoardService.sumFavor(filterMatch),
+      goalsOwn: LeaderBoardService.sumOwn(filterMatch),
+      goalsBalance: LeaderBoardService.balance(filterMatch),
+      efficiency: LeaderBoardService.effec(filterMatch),
+    };
+  }
+
+  static async getLeaderBoardHome() {
+    const matchList = await Match.findAll({
+      where: {
+        inProgress: false,
+      },
     });
-    return newArray.filter((element, index) => {
-      for (let i = index + 1; i < newArray.length; i += 1) {
-        if (element.name === newArray[i].name) {
-          return false;
-        }
-      }
-      return true;
+    const teamList = await Team.findAll();
+    const home = teamList.map((time) => {
+      const filterMatch = matchList.filter(
+        (match) => match.homeTeamId === time.id,
+      );
+      return LeaderBoardService.respHome(filterMatch, time.teamName);
     });
-  }
-
-  static async getStatusHome() {
-    const classIntial = await LeaderboardService.zeraClassHome();
-    const respHome = await MatchService.listInprogressOff();
-    const matchResult = respHome.map((p) => verificaResultado(p));
-    const result: TeamStats[] = [];
-    classIntial.forEach((team) => {
-      let auxTeam = { ...team };
-      matchResult.forEach((element) => {
-        auxTeam = LeaderboardService.resultFor(element, auxTeam);
-      });
-      result.push(auxTeam);
-    });
-    return result;
-  }
-
-  static resultFor(element: TabInterHomeAway, team: TeamStats) {
-    const result = { ...team };
-    if (element.name === team.name) {
-      result.totalPoints += element.points ?? 0;
-      result.totalGames += element.jogo ?? 0;
-      result.totalVictories += element.vitoria ?? 0;
-      result.totalDraws += element.empate ?? 0;
-      result.totalLosses += element.derrota ?? 0;
-      result.goalsFavor += element.goalsAfavor ?? 0;
-      result.goalsOwn += element.goalsContra ?? 0;
-    }
-    return result;
+    return LeaderBoardService.sortMatch(home);
   }
 }

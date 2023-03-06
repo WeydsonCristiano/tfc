@@ -1,17 +1,18 @@
-export interface TabInter {
-  name: string;
-  totalPoints: number;
-  totalGames: number | undefined;
-  totalVictories: number;
-  totalDraws: number;
-  totalLosses: number;
-  goalsFavor: number;
-  goalsOwn: number;
-  goalsBalance: number;
-  efficiency: string;
-}
+// export interface TabInter {
+//   name: string;
+//   totalPoints: number;
+//   totalGames: number | undefined;
+//   totalVictories: number;
+//   totalDraws: number;
+//   totalLosses: number;
+//   goalsFavor: number;
+//   goalsOwn: number;
+//   goalsBalance: number;
+//   efficiency: string;
+// }
 
 export interface TabInterHomeAway {
+  [x: string]: any;
   name: string;
   points: number;
   vitoria: number;
@@ -21,4 +22,6 @@ export interface TabInterHomeAway {
   goalsAfavor: number;
   goalsContra: number;
   saldoGoals: number;
+  goalsBalance: number;
+  efficiency: string;
 }

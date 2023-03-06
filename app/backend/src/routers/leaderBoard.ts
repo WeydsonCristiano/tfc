@@ -5,7 +5,7 @@ import LeaderboardController from '../controller/LeaderBoardController';
 const leaderRouter = Router();
 
 leaderRouter.get('/home', (req: Request, res: Response) => {
-  LeaderboardController.getStatusHome(req, res);
+  LeaderboardController.getLeaderBoardHome(req, res);
 });
 
 export default leaderRouter;
