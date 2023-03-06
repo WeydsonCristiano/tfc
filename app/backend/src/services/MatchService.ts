@@ -1,4 +1,5 @@
-import { Op, fn, col } from 'sequelize';
+// fn, col
+import { Op } from 'sequelize';
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 import IbodyInterface from '../interface/InterBody';
@@ -98,77 +99,5 @@ class MatchService {
     const matchersUpdate = await Match.create({ ...body, inProgress: true });
     return { status: 201, message: matchersUpdate };
   };
-
-  static async funcPlay() {
-    const partidas = await Match.findAll({
-      attributes: [
-        'homeTeamId',
-        [fn('COUNT', col('matches.id')), 'totalGames'],
-        [fn('SUM', col('home_team_goals')), 'goalsFavor'],
-        [fn('SUM', col('away_team_goals')), 'goalsOwn'],
-      ],
-      group: ['homeTeamId'],
-      where: {
-        inProgress: false,
-      },
-      include: [
-        {
-          model: Team,
-          as: 'homeTeam',
-          attributes: { exclude: ['id'] } }],
-    });
-    return partidas;
-  }
-
-  static async funWin() {
-    const stati = await Match.findAll({
-      attributes: [
-        'homeTeamId',
-        [fn('COUNT', col('home_team_goals')), 'totalVictories'],
-      ],
-      group: ['homeTeamId'],
-      where: {
-        inProgress: false,
-        homeTeamGoals: {
-          [Op.gt]: 'awayTeamGoals',
-        },
-      },
-    });
-    return stati;
-  }
-
-  static async funDraws() {
-    const stati = await Match.findAll({
-      attributes: [
-        'homeTeamId',
-        [fn('COUNT', col('home_team_goals')), 'totalDraws'],
-      ],
-      group: ['homeTeamId'],
-      where: {
-        inProgress: false,
-        homeTeamGoals: {
-          [Op.eq]: 'awayTeamGoals',
-        },
-      },
-    });
-    return stati;
-  }
-
-  static async funLosses() {
-    const stati = await Match.findAll({
-      attributes: [
-        'homeTeamId',
-        [fn('COUNT', col('away_team_goals')), 'totalLosses'],
-      ],
-      group: ['homeTeamId'],
-      where: {
-        inProgress: false,
-        awayTeamGoals: {
-          [Op.gt]: 'homeTeamGoals',
-        },
-      },
-    });
-    return stati;
-  }
 }
 export default MatchService;

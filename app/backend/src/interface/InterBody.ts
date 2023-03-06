@@ -1,8 +1,8 @@
 export default interface IbodyInterface {
-  home: string;
-  away: string;
+  // home: string;
+  // away: string;
   homeTeamId: number;
-  awayTeamId: number;
+  // awayTeamId: number;
   homeTeamGoals: number;
   awayTeamGoals: number;
 }

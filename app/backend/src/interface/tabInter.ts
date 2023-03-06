@@ -1,6 +1,5 @@
 export interface TabInter {
   name: string;
-  teamName: any;
   totalPoints: number;
   totalGames: number | undefined;
   totalVictories: number;
@@ -13,7 +12,6 @@ export interface TabInter {
 }
 
 export interface TabInterHomeAway {
-  teamName: any;
   name: string;
   points: number;
   vitoria: number;
