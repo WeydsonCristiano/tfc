@@ -1,6 +1,6 @@
 import GenericError from '../erros/GenericError';
 import Team from '../database/models/Team';
-import Match from '../database/models/Match';
+// import Match from '../database/models/Match';
 
 export default class TeamService {
   static findAll = async () => {
@@ -14,12 +14,12 @@ export default class TeamService {
     return team;
   };
 
-  static testsFunc = async (
-    type: 'homeMatches' | 'awayMatches',
-  ) => Team.findAll({ include: [{
-    model: Match,
-    as: type,
-    attributes: ['homeTeamGoals', 'awayTeamGoals'],
-    where: { inProgress: false },
-  }] });
+  // static testsFunc = async (
+  //   type: 'homeMatches' | 'awayMatches',
+  // ) => Team.findAll({ include: [{
+  //   model: Match,
+  //   as: type,
+  //   attributes: ['homeTeamGoals', 'awayTeamGoals'],
+  //   where: { inProgress: false },
+  // }] });
 }
