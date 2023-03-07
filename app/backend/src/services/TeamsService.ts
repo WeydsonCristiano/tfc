@@ -13,13 +13,4 @@ export default class TeamService {
     if (!team) throw new GenericError('No team found', 404);
     return team;
   };
-
-  // static testsFunc = async (
-  //   type: 'homeMatches' | 'awayMatches',
-  // ) => Team.findAll({ include: [{
-  //   model: Match,
-  //   as: type,
-  //   attributes: ['homeTeamGoals', 'awayTeamGoals'],
-  //   where: { inProgress: false },
-  // }] });
 }
