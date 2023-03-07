@@ -77,10 +77,11 @@ export default class LeaderBoardServiceAway {
     const teamList = await Team.findAll();
     const away = teamList.map((time) => {
       const filterMatch = matchList.filter(
-        (match) => match.awayTeamid === time.id,
+        (match) => match.homeTeamId === time.id,
       );
       return LeaderBoardServiceAway.respAway(filterMatch, time.teamName);
     });
+    console.log('teste', matchList);
     return LeaderBoardServiceAway.sortMatch(away);
   }
 }
