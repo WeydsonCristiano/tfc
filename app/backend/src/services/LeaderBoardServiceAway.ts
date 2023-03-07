@@ -79,7 +79,6 @@ export default class LeaderBoardServiceAway {
       const filterMatch = matchList.filter(
         (match) => match.awayTeamId === time.id,
       );
-      console.log('teste', matchList);
       return LeaderBoardServiceAway.respAway(filterMatch, time.teamName);
     });
     return LeaderBoardServiceAway.sortMatch(away);

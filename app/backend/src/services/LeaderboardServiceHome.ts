@@ -2,7 +2,7 @@ import TeamStats from '../interface/TeamStats';
 import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 
-export default class LeaderBoardService {
+export default class LeaderBoardServiceHome {
   static victories(filterMatch: Match[]) {
     return filterMatch.filter(
       (match) => match.homeTeamGoals > match.awayTeamGoals,
@@ -31,19 +31,19 @@ export default class LeaderBoardService {
 
   static balance(filterMatch: Match[]) {
     return (
-      LeaderBoardService.sumFavor(filterMatch) - LeaderBoardService.sumOwn(filterMatch)
+      LeaderBoardServiceHome.sumFavor(filterMatch) - LeaderBoardServiceHome.sumOwn(filterMatch)
     );
   }
 
   static sumPoints(filterMatch: Match[]) {
     return (
-      LeaderBoardService.victories(filterMatch) * 3 + LeaderBoardService.draws(filterMatch)
+      LeaderBoardServiceHome.victories(filterMatch) * 3 + LeaderBoardServiceHome.draws(filterMatch)
     );
   }
 
   static effec(filterMatch: Match[]) {
     return (
-      (LeaderBoardService.sumPoints(filterMatch) / (filterMatch.length * 3)) * 100).toFixed(2);
+      (LeaderBoardServiceHome.sumPoints(filterMatch) / (filterMatch.length * 3)) * 100).toFixed(2);
   }
 
   static sortMatch(leaderBoard: TeamStats[]) {
@@ -56,15 +56,15 @@ export default class LeaderBoardService {
   static respHome(filterMatch: Match[], teamName: string) {
     return {
       name: teamName,
-      totalPoints: LeaderBoardService.sumPoints(filterMatch),
+      totalPoints: LeaderBoardServiceHome.sumPoints(filterMatch),
       totalGames: filterMatch.length,
-      totalVictories: LeaderBoardService.victories(filterMatch),
-      totalDraws: LeaderBoardService.draws(filterMatch),
-      totalLosses: LeaderBoardService.losses(filterMatch),
-      goalsFavor: LeaderBoardService.sumFavor(filterMatch),
-      goalsOwn: LeaderBoardService.sumOwn(filterMatch),
-      goalsBalance: LeaderBoardService.balance(filterMatch),
-      efficiency: LeaderBoardService.effec(filterMatch),
+      totalVictories: LeaderBoardServiceHome.victories(filterMatch),
+      totalDraws: LeaderBoardServiceHome.draws(filterMatch),
+      totalLosses: LeaderBoardServiceHome.losses(filterMatch),
+      goalsFavor: LeaderBoardServiceHome.sumFavor(filterMatch),
+      goalsOwn: LeaderBoardServiceHome.sumOwn(filterMatch),
+      goalsBalance: LeaderBoardServiceHome.balance(filterMatch),
+      efficiency: LeaderBoardServiceHome.effec(filterMatch),
     };
   }
 
@@ -79,8 +79,8 @@ export default class LeaderBoardService {
       const filterMatch = matchList.filter(
         (match) => match.homeTeamId === time.id,
       );
-      return LeaderBoardService.respHome(filterMatch, time.teamName);
+      return LeaderBoardServiceHome.respHome(filterMatch, time.teamName);
     });
-    return LeaderBoardService.sortMatch(home);
+    return LeaderBoardServiceHome.sortMatch(home);
   }
 }
