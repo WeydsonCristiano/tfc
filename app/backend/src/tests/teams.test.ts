@@ -9,18 +9,18 @@ import Team from '../database/models/Team';
 chai.use(chaiHttp);
 
 const { expect } = chai;
+const teams = [
+  {
+    id: 1,
+    team_name: 'Bahia',
+  },
+  {
+    id: 2,
+    team_name: 'Botafogo',
+  },
+];
 
 describe('testar teams', () => {
-  const teams = [
-    {
-      id: 1,
-      team_name: 'Bahia',
-    },
-    {
-      id: 2,
-      team_name: 'Botafogo',
-    },
-  ];
 
   afterEach(() => {
     sinon.restore();

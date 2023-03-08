@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import LeaderBoardService from '../services/leaderboarderService';
 import LeaderBoardServiceAway from '../services/LeaderBoardServiceAway';
-import LeaderboardService from '../services/LeaderboardServiceHome';
+import LeaderBoardServiceHome from '../services/LeaderboardServiceHome';
 
 export default class LeaderboardController {
   static async getLeaderBoardHome(_req: Request, res: Response) {
-    const respHome = await LeaderboardService.getLeaderBoardHome();
+    const respHome = await LeaderBoardServiceHome.getLeaderBoardHome();
     return res.status(200).json(respHome);
   }
 
