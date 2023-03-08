@@ -1,6 +1,5 @@
 import GenericError from '../erros/GenericError';
 import Team from '../database/models/Team';
-// import Match from '../database/models/Match';
 
 export default class TeamService {
   static findAll = async () => {

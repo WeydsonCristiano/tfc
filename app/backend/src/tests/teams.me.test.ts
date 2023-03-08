@@ -6,8 +6,6 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 import Team from '../database/models/Team';
 
-import { Response } from 'superagent';
-
 chai.use(chaiHttp);
 
 const { expect } = chai;
@@ -34,6 +32,13 @@ describe('testar teams', () => {
     const res = await chai.request(app).get('/teams').send();
 
     expect(res).to.have.status(200);
+  });
+
+  it('testando rota ', async () => {
+    sinon.stub(Team, 'findAll').resolves(teams as unknown as Team[]);
+
+    const res = await chai.request(app).get('/teams').send();
+
     expect(res.body).to.deep.equal(teams);
   });
 
